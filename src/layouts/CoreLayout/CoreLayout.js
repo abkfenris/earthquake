@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react'
+import { Link } from 'react-router'
 import '../../styles/core.scss'
 
 // Note: Stateless/function components *will not* hot reload!
@@ -13,6 +14,9 @@ import '../../styles/core.scss'
 function CoreLayout ({ children }) {
   return (
     <div className='page-container'>
+      <nav>
+        <Link to='/recent'>Recent Earthquakes</Link>
+      </nav>
       <div className='view-container'>
         {children}
       </div>

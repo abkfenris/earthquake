@@ -10,3 +10,37 @@ For example:
 @import './variables/components';
 @import './themes/default';
 */
+
+.page-container, .view-container, #earthquake-flex {
+  height: 100%;
+}
+
+#main {
+  background: green;
+  height: 100%;
+  display: -webkit-flex;
+  display:         flex;
+  -webkit-flex-flow: row;
+          flex-flow: row;
+}
+
+#info-column {
+  -webkit-flex: 1 1 30%;
+          flex: 1 1 30%;
+  -webkit-order: 1;
+          order: 1;
+  height: 100%;
+}
+
+#main-column {
+  -webkit-flex: 1 1 70%;
+          flex: 1 1 70%;
+  -webkit-order: 2;
+          order: 2;
+  height: 100%;
+  background: gray;
+}
+
+#map {
+  height: 100%;
+}

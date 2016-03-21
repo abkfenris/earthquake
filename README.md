@@ -1,3 +1,10 @@
+React-Earthquake
+================
+
+Building a react based version of the [Global Earthquake Explorer](http://www.seis.sc.edu/gee/)
+
+
+
 React Redux Starter Kit
 =======================
 
