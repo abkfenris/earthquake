@@ -3,7 +3,7 @@ React-Earthquake
 
 Building a react based version of the [Global Earthquake Explorer](http://www.seis.sc.edu/gee/)
 
-
+Use [IRIS](http://iris.edu) webservices like [timeseriesplot](http://service.iris.edu/irisws/timeseriesplot/1/)
 
 React Redux Starter Kit
 =======================

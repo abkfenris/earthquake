@@ -8,13 +8,11 @@ export class Mapbox extends React.Component {
   props: Props;
 
   componentDidMount () {
-    console.log('mount')
     L.mapbox.accessToken = this.props.accessToken // eslint-disable-line
     this.map = L.mapbox.map('map', 'mapbox.streets') // eslint-disable-line
   }
 
   render () {
-    console.log('render')
     return (
       <div id='map'></div>
     )

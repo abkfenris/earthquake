@@ -1,10 +1,27 @@
 import React from 'react'
 
 import Mapbox from 'components/Mapbox/Mapbox'
+import RecentList from 'components/RecentList/RecentList'
+
+let testGeojson = {
+  features: [
+    {
+      properties: {
+        name: 'Feature A'
+      }
+    },
+    {
+      properties: {
+        name: 'Feature B'
+      }
+    }
+  ]
+}
 
 type Props = {
 
 };
+
 export class Recent extends React.Component {
   props: Props;
 
@@ -18,7 +35,9 @@ export class Recent extends React.Component {
               />
           </div>
           <div id='info-column'>
-            Info
+            <RecentList
+              geojson={testGeojson}
+              />
           </div>
         </div>
       </div>
