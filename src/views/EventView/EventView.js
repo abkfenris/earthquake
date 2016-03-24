@@ -5,7 +5,8 @@ import {loadEvent} from 'redux/modules/event'
 
 type Props = {
   event: PropTypes.object.isRequired,
-  params: PropTypes.object.isRequired
+  params: PropTypes.object.isRequired,
+  loadEvent: PropTypes.func.isRequired
 };
 export class EventView extends React.Component {
   props: Props;
@@ -18,7 +19,8 @@ export class EventView extends React.Component {
   }
 
   renderMain () {
-    if (this.props.event[this.props.params.event_id] === undefined) {
+    if ((this.props.event[this.props.params.event_id] === undefined) ||
+      (this.props.event[this.props.params.event_id].properties === undefined)) {
       return (
         <h2>Loading Event: {this.props.params.event_id}</h2>
       )
