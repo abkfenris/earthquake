@@ -16,6 +16,7 @@ function CoreLayout ({ children }) {
     <div className='page-container'>
       <nav>
         <Link to='/recent'>Recent Earthquakes</Link>
+        <Link to='/event/us20005bft'>Test Event</Link>
       </nav>
       <div className='view-container'>
         {children}
