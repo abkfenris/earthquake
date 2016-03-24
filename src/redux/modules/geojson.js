@@ -7,6 +7,7 @@ export const LOAD_GEOJSON = 'LOAD_GEOJSON'
 export const LOADING_GEOJSON = 'LOADING_GEOJSON'
 export const RECIEVE_GEOJSON = 'RECIEVE_GEOJSON'
 export const FAILED_GEOJSON = 'FAILED_GEOJSON'
+export const FILTER_GEOJSON = 'FILTER_GEOJSON'
 export const JSON_URL = 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson' //eslint-disable-line
 
 // -----------------
@@ -29,6 +30,14 @@ export function failedGeojson (exception) {
   return {
     type: FAILED_GEOJSON,
     exception
+  }
+}
+
+export function filterGeojson (min, max) {
+  return {
+    type: FILTER_GEOJSON,
+    min,
+    max
   }
 }
 
@@ -60,7 +69,7 @@ const geojsonReducer = (state = initialState, action) => {
     case LOADING_GEOJSON:
       return {...state, loading: true}
     case RECIEVE_GEOJSON:
-      return {...action.json}
+      return {...action.json, min: 5, max: 6}
     default:
       return state
   }
