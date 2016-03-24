@@ -70,6 +70,8 @@ const geojsonReducer = (state = initialState, action) => {
       return {...state, loading: true}
     case RECIEVE_GEOJSON:
       return {...action.json, min: 5, max: 6}
+    case FILTER_GEOJSON:
+      return {...state, min: action.min, max: action.max}
     default:
       return state
   }

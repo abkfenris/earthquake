@@ -1,13 +1,18 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
+import Slider from 'rc-slider'
+
+// load CSS for slider
+import 'rc-slider/assets/index.css'
 
 import Mapbox from 'components/Mapbox/Mapbox'
 import RecentList from 'components/RecentList/RecentList'
-import {loadGeojson} from 'redux/modules/geojson'
+import {loadGeojson, filterGeojson} from 'redux/modules/geojson'
 
 type Props = {
   geojson: PropTypes.object.isRequired,
-  loadGeojson: PropTypes.func.isRequired
+  loadGeojson: PropTypes.func.isRequired,
+  filterGeojson: PropTypes.func.isRequired
 };
 
 export class Recent extends React.Component {
@@ -21,6 +26,7 @@ export class Recent extends React.Component {
   }
 
   renderMain () {
+    console.log(this.props)
     if (this.props.geojson.type === 'FeatureCollection') {
       // Filter down the geojson by a minimum magnitude
       let {min, max} = this.props.geojson
@@ -37,6 +43,15 @@ export class Recent extends React.Component {
               />
           </div>
           <div id='info-column'>
+            <Slider
+              range
+              defaultValue={[min, max]}
+              max={10}
+              step={0.1}
+              onChange={(values) => { //eslint-disable-line
+                this.props.filterGeojson(values[0], values[1])
+              }}
+              />
             <RecentList
               geojson={geojson}
               />
@@ -66,6 +81,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     loadGeojson: () => {
       dispatch(loadGeojson())
+    },
+    filterGeojson: (min, max) => {
+      dispatch(filterGeojson(min, max))
     }
   }
 }
