@@ -13,7 +13,12 @@ export class RecentList extends React.Component {
       <div id='recent-events'>
         <ul>
         {this.props.geojson.features.map((feature) => {
-          return (<RecentListItem feature={feature} />)
+          return (
+            <RecentListItem
+              feature={feature}
+              key={feature.id}
+            />
+          )
         })}
         </ul>
       </div>
