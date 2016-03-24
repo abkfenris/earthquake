@@ -43,7 +43,6 @@ export class Recent extends React.Component {
           }
         })
       }
-
       return (
         <div id='main'>
           <div id='main-column'>
@@ -58,7 +57,7 @@ export class Recent extends React.Component {
               defaultValue={[min, max]}
               max={10}
               step={0.1}
-              onChange={(values) => { //eslint-disable-line
+              onAfterChange={(values) => { //eslint-disable-line
                 this.props.filterGeojson(values[0], values[1])
               }}
               />
