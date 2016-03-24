@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import Slider from 'rc-slider'
+import buffer from 'turf-buffer'
 
 // load CSS for slider
 import 'rc-slider/assets/index.css'
@@ -26,13 +27,22 @@ export class Recent extends React.Component {
   }
 
   renderMain () {
-    console.log(this.props)
     if (this.props.geojson.type === 'FeatureCollection') {
       // Filter down the geojson by a minimum magnitude
       let {min, max} = this.props.geojson
-      let geojson = {...this.props.geojson, features: this.props.geojson.features.filter((feature) => {
-        return max >= feature.properties.mag && feature.properties.mag >= min
-      })}
+      let geojson = {
+        ...this.props.geojson,
+        // filter features by magnitude
+        features: this.props.geojson.features.filter((feature) => {
+          return max >= feature.properties.mag && feature.properties.mag >= min
+        // then buffer points to polygons based on magnitude
+        }).map((feature) => {
+          return {
+            ...feature,
+            geometry: buffer(feature, Math.pow(2.5, feature.properties.mag), 'miles').geometry
+          }
+        })
+      }
 
       return (
         <div id='main'>
