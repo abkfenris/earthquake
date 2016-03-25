@@ -1,6 +1,8 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 
+import Mapbox from 'components/Mapbox/Mapbox'
+import EventStationList from 'components/EventStationList/EventStationList'
 import {loadEvent} from 'redux/modules/event'
 
 type Props = {
@@ -13,7 +15,6 @@ export class EventView extends React.Component {
 
   componentWillMount () {
     if (this.props.event[this.props.params.event_id] === undefined) {
-      console.log('undefined')
       this.props.loadEvent(this.props.params.event_id)
     }
   }
@@ -26,15 +27,36 @@ export class EventView extends React.Component {
       )
     } else {
       let event = this.props.event[this.props.params.event_id]
+      let event_date = new Date(event.properties.time)
       return (
-        <h2>Loaded: {event.properties.title}</h2>
+        <div id='main'>
+          <div id='main-column'>
+            <Mapbox
+              geojson={event}
+              accessToken='pk.eyJ1IjoiZmVucmlzIiwiYSI6ImNpbTE1eXUyaTA4dHd1c2tzZnl5enRnd2kifQ.5_XdJHT5JAWMkY5LCYty_Q' //eslint-disable-line
+              />
+          </div>
+          <div id='info-column'>
+            <div id='event-details'>
+              <a href={event.properties.url}><h2>{event.properties.title}</h2></a>
+              <ul>
+                <li>{event_date.toTimeString()}</li>
+                <li>Magnitude: {event.properties.mag} {event.properties.magType}</li>
+                <li>Depth: {event.geometry.coordinates[2]} km</li>
+              </ul>
+            </div>
+            <EventStationList
+              event={event}
+              />
+          </div>
+        </div>
       )
     }
   }
 
   render () {
     return (
-      <div>
+      <div id='earthquake-flex'>
         {this.renderMain()}
       </div>
 

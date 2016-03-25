@@ -1,5 +1,7 @@
 import fetch from 'isomorphic-fetch'
 
+import {fdsnwsStationToObject} from 'utils/iris'
+
 // -----------------
 // Constants
 // -----------------
@@ -7,6 +9,10 @@ export const LOAD_EVENT = 'LOAD_EVENT'
 export const LOADING_EVENT = 'LOADING_EVENT'
 export const RECIEVE_EVENT = 'RECIEVE_EVENT'
 export const FAILED_EVENT = 'FAILED_EVENT'
+export const LOAD_STATIONS = 'LOAD_STATIONS'
+export const LOADING_STATIONS = 'LOADING_STATIONS'
+export const RECIEVE_STATIONS = 'RECIEVE_STATIONS'
+export const FAILED_STATIONS = 'FAILED_STATIONS'
 export const BASE_URL = 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/'
 
 // -----------------
@@ -50,6 +56,53 @@ export function loadEvent (event_id) {
   }
 }
 
+export function loadingStations (event_id) {
+  return {
+    type: LOADING_STATIONS,
+    event_id
+  }
+}
+
+export function recieveStations (event_id, data) {
+  return {
+    type: RECIEVE_STATIONS,
+    event_id,
+    data
+  }
+}
+
+export function failedStations (event_id, exception) {
+  return {
+    type: FAILED_STATIONS,
+    event_id,
+    exception
+  }
+}
+
+export function loadStations (event_id) {
+  return function (dispatch, getState) {
+    let event = getState().event[event_id]
+    if (!('stations' in event)) {
+      dispatch(loadingStations(event_id))
+      let starttime = new Date(event.properties.time)
+      let endtime = new Date(event.properties.time)
+      endtime.setUTCHours(endtime.getUTCHours() + 2)
+      // http://service.iris.edu/fdsnws/station/1/query?latitude=-56.1&longitude=-26.7&maxradius=15&nodata=404
+      let url = 'http://service.iris.edu/fdsnws/station/1/query?latitude=-56.1&longitude=-26.7&maxradius=15&nodata=404'
+      // url += '&starttime=' + starttime.toISOString().split('T')[0]
+      // url += '&endtime=' + endtime.toISOString().split('T')[0]
+
+      return fetch(url)
+        .then((response) => response.text())
+        .then((text) =>
+          dispatch(recieveStations(event_id, fdsnwsStationToObject(text)))
+        ).catch((exception) =>
+          dispatch(failedStations(event_id, exception))
+        )
+    }
+  }
+}
+
 // -----------------
 // Action Handlers
 // -----------------
@@ -57,10 +110,35 @@ export function loadEvent (event_id) {
 // -----------------
 // Reducer
 // -----------------
+const stationInitialState = {}
+const stations = (state = stationInitialState, action) => {
+  console.log(action)
+  switch (action.type) {
+    case LOADING_STATIONS:
+      console.log(LOADING_STATIONS)
+      return state
+    case RECIEVE_STATIONS:
+      console.log(RECIEVE_STATIONS)
+      return state
+    case FAILED_STATIONS:
+      console.log(FAILED_STATIONS)
+      return state
+    default:
+      return state
+  }
+}
+
+
 const initialState = {}
 const eventReducer = (state = initialState, action) => {
   let next_state = {}
   switch (action.type) {
+    case LOADING_STATIONS:
+    case RECIEVE_STATIONS:
+    case FAILED_STATIONS:
+      next_state = {...state}
+      next_state[action.event_id].stations = stations(state[action.event_id].stations, action)
+      return next_state
     case LOADING_EVENT:
       next_state = {...state}
       next_state[action.event_id] = {loading: true}
