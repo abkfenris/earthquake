@@ -33,7 +33,11 @@ export function fdsnwsStationToObject (xml) {
         var station_node = net_node.getElementsByTagName('Station')[station_n]
 
         if (station_node.localName === 'Station') {
-          var station = {geometry: {type: 'Point', coordinates: []}, properties: {}}
+          var station = {
+            type: 'Feature',
+            geometry: {type: 'Point', coordinates: []},
+            properties: {}
+          }
 
           station.geometry.coordinates.push(Number(station_node.getElementsByTagName('Longitude')[0].textContent))
           station.geometry.coordinates.push(Number(station_node.getElementsByTagName('Latitude')[0].textContent))

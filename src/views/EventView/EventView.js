@@ -27,12 +27,20 @@ export class EventView extends React.Component {
       )
     } else {
       let event = this.props.event[this.props.params.event_id]
+      let geojson
+      if ((event.stations === undefined) || (event.stations.features === undefined)) {
+        geojson = event
+      } else {
+        geojson = Object.assign({}, event.stations, {features: [...event.stations.features]})
+        geojson.features.unshift(event)
+      }
+
       let event_date = new Date(event.properties.time)
       return (
         <div id='main'>
           <div id='main-column'>
             <Mapbox
-              geojson={event}
+              geojson={geojson}
               accessToken='pk.eyJ1IjoiZmVucmlzIiwiYSI6ImNpbTE1eXUyaTA4dHd1c2tzZnl5enRnd2kifQ.5_XdJHT5JAWMkY5LCYty_Q' //eslint-disable-line
               />
           </div>

@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch'
 
 import {fdsnwsStationToObject} from 'utils/iris'
+import {featuresWithDistance, compareFeatureDistances} from 'utils/geojson'
 
 // -----------------
 // Constants
@@ -88,17 +89,23 @@ export function loadStations (event_id) {
       let endtime = new Date(event.properties.time)
       endtime.setUTCHours(endtime.getUTCHours() + 2)
       // http://service.iris.edu/fdsnws/station/1/query?latitude=-56.1&longitude=-26.7&maxradius=15&nodata=404
-      let url = 'http://service.iris.edu/fdsnws/station/1/query?latitude=-56.1&longitude=-26.7&maxradius=15&nodata=404'
-      // url += '&starttime=' + starttime.toISOString().split('T')[0]
-      // url += '&endtime=' + endtime.toISOString().split('T')[0]
+      let url = 'http://service.iris.edu/fdsnws/station/1/query?latitude=-56.1&longitude=-26.7&maxradius=50' // 'latitude=-56.1&longitude=-26.7&maxradius=15'
+      url += '&startbefore=' + starttime.toISOString() // .split('T')[0]
+      url += '&endafter=' + endtime.toISOString() // .split('T')[0]
+      // console.log(url)
 
       return fetch(url)
         .then((response) => response.text())
-        .then((text) =>
-          dispatch(recieveStations(event_id, fdsnwsStationToObject(text)))
-        ).catch((exception) =>
+        .then((text) => {
+          let stations = fdsnwsStationToObject(text)
+          stations = featuresWithDistance(event, stations)
+          stations.sort(compareFeatureDistances)
+          dispatch(recieveStations(event_id, stations))
+        }
+
+      ).catch((exception) =>
           dispatch(failedStations(event_id, exception))
-        )
+      )
     }
   }
 }
@@ -112,17 +119,13 @@ export function loadStations (event_id) {
 // -----------------
 const stationInitialState = {}
 const stations = (state = stationInitialState, action) => {
-  console.log(action)
   switch (action.type) {
     case LOADING_STATIONS:
-      console.log(LOADING_STATIONS)
-      return state
+      return {loading: true}
     case RECIEVE_STATIONS:
-      console.log(RECIEVE_STATIONS)
-      return state
+      return {type: 'FeatureCollection', features: action.data}
     case FAILED_STATIONS:
-      console.log(FAILED_STATIONS)
-      return state
+      return {failed: true}
     default:
       return state
   }

@@ -4,14 +4,17 @@ import {connect} from 'react-redux'
 import {loadStations} from 'redux/modules/event'
 
 type Props = {
-  event: PropTypes.object.isRequired
+  event: PropTypes.object.isRequired,
+  loadStations: PropTypes.func.isRequired
 };
 export class EventStationList extends React.Component {
   props: Props;
 
-  render () {
-    console.log(this.props)
+  componentDidMount () {
     this.props.loadStations(this.props.event.id)
+  }
+
+  render () {
     return (
       <div>Event Stations</div>
     )
