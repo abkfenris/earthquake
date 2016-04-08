@@ -1,6 +1,13 @@
 React-Earthquake
 ================
 
+[![Circle CI](https://circleci.com/gh/abkfenris/earthquake.svg?style=svg)](https://circleci.com/gh/abkfenris/earthquake)
+[![Code Climate](https://codeclimate.com/github/abkfenris/earthquake/badges/gpa.svg)](https://codeclimate.com/github/abkfenris/earthquake)
+[![bitHound Overall Score](https://www.bithound.io/github/abkfenris/earthquake/badges/score.svg)](https://www.bithound.io/github/abkfenris/earthquake)
+[![bitHound Dependencies](https://www.bithound.io/github/abkfenris/earthquake/badges/dependencies.svg)](https://www.bithound.io/github/abkfenris/earthquake/sunset/dependencies/npm)
+[![bitHound Dev Dependencies](https://www.bithound.io/github/abkfenris/earthquake/badges/devDependencies.svg)](https://www.bithound.io/github/abkfenris/earthquake/sunset/dependencies/npm)
+[![Codacy Badge](https://api.codacy.com/project/badge/grade/d9c191d9a87249c8b3e17e586afb376b)](https://www.codacy.com/app/abk/earthquake)
+
 Building a react based version of the [Global Earthquake Explorer](http://www.seis.sc.edu/gee/)
 
 Use [IRIS](http://iris.edu) webservices like [timeseriesplot](http://service.iris.edu/irisws/timeseriesplot/1/)
