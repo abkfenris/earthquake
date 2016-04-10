@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 
+import EventStationListItem from 'components/EventStationListItem/EventStationListItem'
 import {loadStations} from 'redux/modules/event'
 
 type Props = {
@@ -16,7 +17,20 @@ export class EventStationList extends React.Component {
 
   render () {
     return (
-      <div>Event Stations</div>
+      <div>
+        <h3>Event Stations</h3>
+        <ul>
+          {this.props.event.stations.features.map((station) => {
+            return (
+              <EventStationListItem
+                station={station}
+                key={station.properties.network_code + '-' + station.properties.code}
+                />
+            )
+          })}
+        </ul>
+      </div>
+
     )
   }
 }
